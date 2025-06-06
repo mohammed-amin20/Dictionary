@@ -18,8 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DictionaryScreenViewModel @Inject constructor(
-    private val repository : DictionaryRepository
-) : ViewModel(){
+    private val repository: DictionaryRepository,
+) : ViewModel() {
 
     private val _state = MutableStateFlow(DictionaryScreenState())
     val state = _state.asStateFlow()
@@ -27,8 +27,8 @@ class DictionaryScreenViewModel @Inject constructor(
     private val _uiAction = MutableSharedFlow<UiAction>()
     val uiAction = _uiAction.asSharedFlow()
 
-    fun onAction(action: DictionaryScreenAction){
-        when(action){
+    fun onAction(action: DictionaryScreenAction) {
+        when (action) {
             DictionaryScreenAction.OnImeSearch -> {
                 viewModelScope.launch {
                     _state.update {
@@ -37,12 +37,17 @@ class DictionaryScreenViewModel @Inject constructor(
                         )
                     }
                     val result = repository.getWordDefinitions(_state.value.search)
-                    when(result){
+                    when (result) {
                         is Result.Failure -> {
-                            when(result.error){
+                            when (result.error) {
                                 Error.Remote.NoInternet -> {
-                                    _uiAction.emit(ShowToastMsg("No Internet Connection"))
+                                    _state.update {
+                                        it.copy(
+                                            noInternet = true
+                                        )
+                                    }
                                 }
+
                                 Error.Remote.NotFound -> {
                                     _state.update {
                                         it.copy(
@@ -50,6 +55,7 @@ class DictionaryScreenViewModel @Inject constructor(
                                         )
                                     }
                                 }
+
                                 is Error.Remote.Unknown -> {
                                     _uiAction.emit(ShowToastMsg("Something Went Wrong"))
                                 }
@@ -64,11 +70,14 @@ class DictionaryScreenViewModel @Inject constructor(
                     }
                     _state.update {
                         it.copy(
-                            loading = false
+                            loading = false,
+                            error = false,
+                            noInternet = false
                         )
                     }
                 }
             }
+
             is DictionaryScreenAction.OnSearchChanged -> {
                 _state.update {
                     it.copy(
@@ -80,19 +89,31 @@ class DictionaryScreenViewModel @Inject constructor(
             is DictionaryScreenAction.OnPlayAudioClicked -> {
                 val mediaPlayer = MediaPlayer()
                 try {
-                    mediaPlayer.reset()
-                    mediaPlayer.setDataSource(action.audio)
-                    mediaPlayer.prepareAsync()
-                    mediaPlayer.setOnPreparedListener {
-                        it.start()
+                    mediaPlayer.apply {
+                        reset()
+                        setDataSource(action.audio)
+                        prepareAsync()
+                        setOnPreparedListener {
+                            it.start()
+                            _state.update {
+                                it.copy(
+                                    playing = true
+                                )
+                            }
+                        }
+                        setOnCompletionListener {
+                            it.release()
+                            _state.update {
+                                it.copy(
+                                    playing = false
+                                )
+                            }
+                        }
                     }
-                    mediaPlayer.setOnCompletionListener {
-                        it.release()
-                    }
-                } catch (e : Exception){
+                } catch (e: Exception) {
                     viewModelScope.launch {
                         _uiAction.emit(
-                            UiAction.ShowToastMsg(e.localizedMessage?: "Sound Error")
+                            UiAction.ShowToastMsg(e.localizedMessage ?: "Sound Error")
                         )
                     }
                 }
@@ -100,6 +121,7 @@ class DictionaryScreenViewModel @Inject constructor(
         }
     }
 }
-sealed interface UiAction{
-    data class ShowToastMsg(val msg : String) : UiAction
+
+sealed interface UiAction {
+    data class ShowToastMsg(val msg: String) : UiAction
 }

@@ -6,5 +6,7 @@ data class DictionaryScreenState(
     val search : String = "",
     val word : Word? = null,
     val loading: Boolean = false,
-    val error : Boolean = false
+    val error : Boolean = false,
+    val noInternet: Boolean = false,
+    val playing : Boolean = false
 )

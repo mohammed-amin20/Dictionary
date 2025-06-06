@@ -30,13 +30,10 @@ fun MeaningItem(meaning: Meaning) {
         )
         Spacer(Modifier.height(8.dp))
         meaning.definitions.forEach { definition ->
-            Column (
-//                modifier = Modifier.fillMaxWidth()
-//                    .weight(1f)
-            ){
+            Column {
                 Text(
                     text = "- ${definition.definition}",
-                    fontSize = 20.sp,
+                    fontSize = 18.sp,
                     color = Color.Black
                 )
                 Spacer(Modifier.height(4.dp))
