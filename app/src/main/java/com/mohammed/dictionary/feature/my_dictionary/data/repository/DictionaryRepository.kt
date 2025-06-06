@@ -12,11 +12,11 @@ import javax.inject.Inject
 class DictionaryRepository @Inject constructor(
     private val api : DictionaryAPI
 ){
-    suspend fun getWordDefinitions(word : String) : Result<List<Word>, Error.Remote>{
+    suspend fun getWordDefinitions(word : String) : Result<Word, Error.Remote>{
         try {
-            val wordDto = api.getWordDefinitions(word)
-            val words = wordDto.map { it.toDomain() }
-            return Result.Success(words)
+            val wordDto = api.getWordDefinitions(word)[0]
+            val word = wordDto.toDomain()
+            return Result.Success(word)
         }catch(e: IOException){
             return Result.Failure(Error.Remote.NoInternet)
         }catch(e: HttpException){

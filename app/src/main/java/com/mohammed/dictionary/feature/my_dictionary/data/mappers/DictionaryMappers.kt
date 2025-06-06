@@ -26,6 +26,6 @@ fun Meaning.toDomain() : com.mohammed.dictionary.feature.my_dictionary.domain.mo
 fun Definition.toDomain(): com.mohammed.dictionary.feature.my_dictionary.domain.model.Definition{
     return com.mohammed.dictionary.feature.my_dictionary.domain.model.Definition(
         definition = this.definition,
-        example = this.example
+        example = this.example ?: ""
     )
 }

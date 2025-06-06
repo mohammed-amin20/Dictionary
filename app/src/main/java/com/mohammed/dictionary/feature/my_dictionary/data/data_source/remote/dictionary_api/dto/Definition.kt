@@ -3,6 +3,6 @@ package com.mohammed.dictionary.feature.my_dictionary.data.data_source.remote.di
 data class Definition(
     val antonyms: List<Any>,
     val definition: String,
-    val example: String,
+    val example: String? = null,
     val synonyms: List<Any>
 )

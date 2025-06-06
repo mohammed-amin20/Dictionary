@@ -6,10 +6,10 @@ import retrofit2.http.Path
 
 interface DictionaryAPI {
 
-    @GET("/word")
+    @GET("/api/v2/entries/en/{word}")
     suspend fun getWordDefinitions( @Path("word") word : String) : WordsDto
 
     companion object{
-        const val BASE_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/"
+        const val BASE_URL = "https://api.dictionaryapi.dev/"
     }
 }
