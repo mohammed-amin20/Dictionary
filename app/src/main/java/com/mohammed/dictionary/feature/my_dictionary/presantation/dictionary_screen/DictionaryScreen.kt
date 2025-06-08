@@ -252,8 +252,9 @@ fun DictionaryScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.no_internet2),
-                        contentDescription = "No internet "
+                        painter = painterResource(R.drawable.no_internet),
+                        contentDescription = "No internet ",
+                        modifier = Modifier.size(400.dp)
                     )
                 }
             }
@@ -264,7 +265,7 @@ fun DictionaryScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.wordly_logo),
+                        painter = painterResource(R.drawable.dictionary_background),
                         contentDescription = "Logo ",
                         contentScale = ContentScale.Crop
                     )

@@ -30,54 +30,63 @@ class DictionaryScreenViewModel @Inject constructor(
     fun onAction(action: DictionaryScreenAction) {
         when (action) {
             DictionaryScreenAction.OnImeSearch -> {
-                viewModelScope.launch {
-                    _state.update {
-                        it.copy(
-                            loading = true
-                        )
-                    }
-                    val result = repository.getWordDefinitions(_state.value.search)
-                    when (result) {
-                        is Result.Failure -> {
-                            when (result.error) {
-                                Error.Remote.NoInternet -> {
-                                    _state.update {
-                                        it.copy(
-                                            noInternet = true,
-                                            error = false
-                                        )
+                if (_state.value.search.isNotBlank()) {
+                    viewModelScope.launch {
+                        _state.update {
+                            it.copy(
+                                loading = true
+                            )
+                        }
+                        val result = repository.getWordDefinitions(_state.value.search)
+                        when (result) {
+                            is Result.Failure -> {
+                                when (result.error) {
+                                    Error.Remote.NoInternet -> {
+                                        _state.update {
+                                            it.copy(
+                                                noInternet = true,
+                                                error = false
+                                            )
+                                        }
                                     }
-                                }
 
-                                Error.Remote.NotFound -> {
-                                    _state.update {
-                                        it.copy(
-                                            error = true
-                                        )
+                                    Error.Remote.NotFound -> {
+                                        _state.update {
+                                            it.copy(
+                                                error = true,
+                                                noInternet = false
+                                            )
+                                        }
                                     }
-                                }
 
-                                is Error.Remote.Unknown -> {
-                                    _uiAction.emit(ShowToastMsg("Something Went Wrong"))
+                                    is Error.Remote.Unknown -> {
+                                        _uiAction.emit(ShowToastMsg("Something Went Wrong"))
+                                    }
+
+                                }
+                            }
+
+                            is Result.Success -> {
+                                val word = result.data
+                                _state.update {
+                                    it.copy(
+                                        word = word,
+                                        error = false,
+                                        noInternet = false
+                                    )
                                 }
                             }
                         }
-                        is Result.Success -> {
-                            val word = result.data
-                            _state.update {
-                                it.copy(
-                                    word = word,
-                                    error = false,
-                                    noInternet = false
-                                )
-                            }
+
+                        _state.update {
+                            it.copy(
+                                loading = false
+                            )
                         }
                     }
-
-                    _state.update {
-                        it.copy(
-                            loading = false
-                        )
+                } else {
+                    viewModelScope.launch {
+                        _uiAction.emit(ShowToastMsg("Please Enter A Word"))
                     }
                 }
             }
