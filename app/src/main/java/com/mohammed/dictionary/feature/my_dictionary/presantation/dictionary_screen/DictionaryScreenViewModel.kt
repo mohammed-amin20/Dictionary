@@ -43,7 +43,8 @@ class DictionaryScreenViewModel @Inject constructor(
                                 Error.Remote.NoInternet -> {
                                     _state.update {
                                         it.copy(
-                                            noInternet = true
+                                            noInternet = true,
+                                            error = false
                                         )
                                     }
                                 }
@@ -64,15 +65,18 @@ class DictionaryScreenViewModel @Inject constructor(
                         is Result.Success -> {
                             val word = result.data
                             _state.update {
-                                it.copy(word = word)
+                                it.copy(
+                                    word = word,
+                                    error = false,
+                                    noInternet = false
+                                )
                             }
                         }
                     }
+
                     _state.update {
                         it.copy(
-                            loading = false,
-                            error = false,
-                            noInternet = false
+                            loading = false
                         )
                     }
                 }
@@ -113,7 +117,7 @@ class DictionaryScreenViewModel @Inject constructor(
                 } catch (e: Exception) {
                     viewModelScope.launch {
                         _uiAction.emit(
-                            UiAction.ShowToastMsg(e.localizedMessage ?: "Sound Error")
+                            ShowToastMsg(e.localizedMessage ?: "Sound Error")
                         )
                     }
                 }

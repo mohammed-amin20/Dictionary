@@ -62,15 +62,15 @@ import com.mohammed.dictionary.feature.my_dictionary.presantation.dictionary_scr
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DictionaryScreen(
-    viewModel: DictionaryScreenViewModel = hiltViewModel()
+    viewModel: DictionaryScreenViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     LaunchedEffect(true) {
         viewModel.uiAction.collect { uiAction ->
-            when(uiAction){
+            when (uiAction) {
                 is UiAction.ShowToastMsg -> {
-                    Toast.makeText(context, uiAction.msg , Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, uiAction.msg, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -83,7 +83,7 @@ fun DictionaryScreen(
                 navigationIcon = {
                     Spacer(Modifier.width(16.dp))
                     Image(
-                        painter = painterResource(R.drawable.dictionarylogo),
+                        painter = painterResource(R.drawable.logo),
                         contentDescription = "logo",
                         modifier = Modifier.size(40.dp)
                     )
@@ -155,7 +155,8 @@ fun DictionaryScreen(
                 )
             )
             Spacer(Modifier.height(height = 20.dp))
-            if (!state.value.error && !state.value.loading && !state.value.noInternet && state.value.word != null){
+
+            if (!state.value.error && !state.value.loading && !state.value.noInternet && state.value.word != null) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
@@ -203,7 +204,7 @@ fun DictionaryScreen(
                                 )
                                 .padding(horizontal = 16.dp, vertical = 8.dp)
                                 .clickable {
-                                    if(!state.value.playing)
+                                    if (!state.value.playing)
                                         viewModel.onAction(
                                             DictionaryScreenAction.OnPlayAudioClicked(state.value.word?.audio!!)
                                         )
@@ -230,38 +231,38 @@ fun DictionaryScreen(
                             )
                         }
                     }
-                item {
-                    state.value.word!!.meanings.forEach { meaning ->
-                        MeaningItem(meaning)
-                        Spacer(Modifier.height(16.dp))
+                    item {
+                        state.value.word!!.meanings.forEach { meaning ->
+                            MeaningItem(meaning)
+                            Spacer(Modifier.height(16.dp))
+                        }
                     }
                 }
-              }
             }
-            if (state.value.loading){
+            if (state.value.loading) {
                 NotFound()
             }
-            if(state.value.error){
+            if (state.value.error) {
                 Empty()
             }
-            if(!state.value.loading && !state.value.error && state.value.noInternet && state.value.word == null ) {
+            if (state.value.noInternet) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.no_internet),
+                        painter = painterResource(R.drawable.no_internet2),
                         contentDescription = "No internet "
                     )
                 }
             }
-            if(!state.value.loading && !state.value.error && !state.value.noInternet && state.value.word == null) {
-                Column (
+            if (!state.value.loading && !state.value.error && !state.value.noInternet && state.value.word == null) {
+                Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
-                ){
+                ) {
                     Image(
                         painter = painterResource(R.drawable.wordly_logo),
                         contentDescription = "Logo ",
@@ -278,9 +279,11 @@ fun DictionaryScreen(
 
                 }
             }
+
         }
     }
 }
+
 
 @Preview(showSystemUi = true)
 @Composable
