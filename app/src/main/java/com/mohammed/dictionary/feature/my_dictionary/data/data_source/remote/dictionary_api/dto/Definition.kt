@@ -1,8 +1,8 @@
 package com.mohammed.dictionary.feature.my_dictionary.data.data_source.remote.dictionary_api.dto
 
 data class Definition(
-    val antonyms: List<Any>,
-    val definition: String,
+    val antonyms: List<Any>? = null,
+    val definition: String? = null,
     val example: String? = null,
-    val synonyms: List<Any>
+    val synonyms: List<Any>? = null
 )

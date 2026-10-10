@@ -1,3 +1,41 @@
 <resources>
     <string name="app_name">Dictionary</string>
+    <string name="brand_title">Dictionary</string>
+    <string name="english_label">English</string>
+    <string name="search_hint">Search a word</string>
+    <string name="search_action">Search</string>
+    <string name="clear_search">Clear search</string>
+    <string name="idle_title">Look up any English word</string>
+    <string name="idle_subtitle">Definitions, pronunciation and Arabic translation.</string>
+    <string name="try_these">Try these</string>
+    <string name="not_found_title">We couldn\&#8217;t find that word</string>
+    <string name="no_internet_title">You\&#8217;re offline</string>
+    <string name="no_internet_subtitle">Check your connection and try again.</string>
+    <string name="error_title">Something went wrong</string>
+    <string name="server_error_title">The dictionary service is unavailable</string>
+    <string name="server_error_subtitle">Please try again in a moment.</string>
+    <string name="retry">Retry</string>
+    <string name="enter_word">Please enter a word</string>
+    <string name="sound_error">Couldn\&#8217;t play the audio</string>
+    <string name="loading_definitions">Looking up the definition\&#8230;</string>
+    <string name="translation_title">Arabic translation</string>    <string name="translation_language_tag">AR</string>
+    <string name="translation_error">Couldn\&#8217;t translate this word.</string>
+    <string name="refresh_translation">Refresh translation</string>
+    <string name="copy">Copy</string>
+    <string name="copied">Copied</string>
+    <string name="phonetic_play">Play pronunciation</string>
+    <string name="phonetic_pause">Pause pronunciation</string>
+    <string name="logo_content_description">App logo</string>
+    <string name="illustration_content_description">Illustration</string>
+    <string name="no_audio">No pronunciation available</string>
+    <string name="definitions_count">%1$d definitions</string>
+    <string name="example_label">Example</string>
+    <string name="splash_logo_content_description">Dictionary logo</string>
+    <string-array name="suggested_words">
+        <item>serendipity</item>
+        <item>ephemeral</item>
+        <item>resilience</item>
+        <item>eloquent</item>
+        <item>solitude</item>
+    </string-array>
 </resources>

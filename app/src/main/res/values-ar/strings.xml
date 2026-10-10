@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">قاموس</string>
+    <string name="brand_title">قاموس</string>
+    <string name="english_label">الإنجليزية</string>
+    <string name="search_hint">ابحث عن كلمة</string>
+    <string name="search_action">بحث</string>
+    <string name="clear_search">مسح البحث</string>
+    <string name="idle_title">ابحث عن أي كلمة إنجليزية</string>
+    <string name="idle_subtitle">التعريفات والنطق والترجمة العربية.</string>
+    <string name="try_these">جرّب هذه</string>
+    <string name="not_found_title">لم نتمكن من العثور على هذه الكلمة</string>
+    <string name="no_internet_title">أنت غير متصل بالإنترنت</string>
+    <string name="no_internet_subtitle">تحقق من اتصالك وحاول مرة أخرى.</string>
+    <string name="error_title">حدث خطأ ما</string>
+    <string name="server_error_title">خدمة القاموس غير متوفرة</string>
+    <string name="server_error_subtitle">يرجى المحاولة بعد قليل.</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="enter_word">الرجاء إدخال كلمة</string>
+    <string name="sound_error">تعذّر تشغيل الصوت</string>
+    <string name="loading_definitions">جارٍ البحث عن التعريف…</string>
+    <string name="translation_title">الترجمة العربية</string>
+    <string name="translation_language_tag">ع</string>
+    <string name="translation_error">تعذّر ترجمة هذه الكلمة.</string>
+    <string name="refresh_translation">تحديث الترجمة</string>
+    <string name="copy">نسخ</string>
+    <string name="copied">تم النسخ</string>
+    <string name="phonetic_play">تشغيل النطق</string>
+    <string name="phonetic_pause">إيقاف النطق</string>
+    <string name="logo_content_description">شعار التطبيق</string>
+    <string name="illustration_content_description">رسم توضيحي</string>
+    <string name="no_audio">لا يتوفر نطق صوتي</string>
+    <string name="definitions_count">%1$d تعريفات</string>
+    <string name="example_label">مثال</string>
+    <string name="splash_logo_content_description">شعار قاموس</string>
+    <string-array name="suggested_words">
+        <item>serendipity</item>
+        <item>ephemeral</item>
+        <item>resilience</item>
+        <item>eloquent</item>
+        <item>solitude</item>
+    </string-array>
+</resources>
