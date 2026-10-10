@@ -1,0 +1,32 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:scaleX="0.78"
+        android:scaleY="0.78">
+
+        <!-- Open book -->
+        <path
+            android:fillColor="#FFFFFFFF"
+            android:pathData="M54,60 C46,56 32,56 22,62 L22,84 C32,80 46,80 54,86 C62,80 76,80 86,84 L86,62 C76,56 62,56 54,60 Z" />
+
+        <!-- Magnifier lens ring -->
+        <path
+            android:pathData="M54,21 a21,21 0 1,0 0.01,0 Z"
+            android:fillColor="#00000000"
+            android:strokeColor="#FFFFFFFF"
+            android:strokeWidth="7" />
+
+        <!-- Handle -->
+        <path
+            android:pathData="M69,57 L87,75"
+            android:strokeColor="#FFFFFFFF"
+            android:strokeWidth="9"
+            android:strokeLineCap="round" />
+    </group>
+</vector>

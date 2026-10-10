@@ -7,7 +7,7 @@
 
     <style name="Theme.Dictionary.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/splash_background</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo_mark</item>
         <item name="postSplashScreenTheme">@style/Theme.Dictionary</item>
     </style>
 </resources>
