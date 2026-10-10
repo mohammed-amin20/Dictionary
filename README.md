@@ -1,6 +1,10 @@
-<h1>Dictionary</h1>
+<p align="center">
+  <img src="app/src/main/ic_launcher-playstore.png" width="96" alt="Dictionary app icon"/>
+</p>
 
-<p>
+<h1 align="center">Dictionary</h1>
+
+<p align="center">
   <img alt="Platform" src="https://img.shields.io/badge/Platform-Android-3DDC84?logo=android&logoColor=white"/>
   <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.1.21-7F52FF?logo=kotlin&logoColor=white"/>
   <img alt="Compose" src="https://img.shields.io/badge/UI-Jetpack%20Compose-4285F4?logo=jetpackcompose&logoColor=white"/>
@@ -39,18 +43,18 @@ data / domain / presentation structure with an **MVI** presentation layer and
 
 The app ships with full light and dark themes.
 
-| Screen | Light | Dark |
-| --- | --- | --- |
-| **Home & Search** | <img src="docs/screenshots/home-light.jpeg" width="220"/> | <img src="docs/screenshots/home-dark.jpeg" width="220"/> |
-| **Word Detail** | <img src="docs/screenshots/output-light.jpeg" width="220"/> | <img src="docs/screenshots/output-dark.jpeg" width="220"/> |
-| **Loading** | <img src="docs/screenshots/search-loading-light.jpeg" width="220"/> | <img src="docs/screenshots/search-loading-dark.jpeg" width="220"/> |
-| **No Internet** | <img src="docs/screenshots/no-internet-light.jpeg" width="220"/> | <img src="docs/screenshots/no-internet-dark.jpeg" width="220"/> |
-
 <p align="center">
   <img src="docs/screenshots/splash.jpeg" width="220"/>
   <br/>
   <b>Splash</b>
 </p>
+
+| Screen | Light | Dark |
+| --- | --- | --- |
+| **Home & Search** | <img src="docs/screenshots/home-light.jpeg" width="220"/> | <img src="docs/screenshots/home-dark.jpeg" width="220"/> |
+| **Loading** | <img src="docs/screenshots/search-loading-light.jpeg" width="220"/> | <img src="docs/screenshots/search-loading-dark.jpeg" width="220"/> |
+| **Word Detail** | <img src="docs/screenshots/output-light.jpeg" width="220"/> | <img src="docs/screenshots/output-dark.jpeg" width="220"/> |
+| **No Internet** | <img src="docs/screenshots/no-internet-light.jpeg" width="220"/> | <img src="docs/screenshots/no-internet-dark.jpeg" width="220"/> |
 
 ## 🛠 Tech Stack
 
