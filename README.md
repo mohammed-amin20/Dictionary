@@ -35,49 +35,22 @@ data / domain / presentation structure with an **MVI** presentation layer and
 - **Resilient data layer** — queries a primary dictionary API and automatically
   falls back to a secondary provider when needed.
 
-## 📱 Screenshots from the Dictionary app
+## 📱 Screenshots
 
-<table>
-  <tr>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/mohammed-amin20/Dictionary/master/main.jpg" width="200"/>
-      <br/>
-      <b>Home / Search</b>
-      <br/>
-      Search any English word from a branded home screen with suggested words.
-    </td>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/mohammed-amin20/Dictionary/master/detail.jpg" width="200"/>
-      <br/>
-      <b>Word Detail</b>
-      <br/>
-      Definitions grouped by part of speech, phonetics, examples, and the Arabic translation.
-    </td>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/mohammed-amin20/Dictionary/master/on%20Sound.jpg" width="200"/>
-      <br/>
-      <b>Pronunciation</b>
-      <br/>
-      Tap the pronunciation button to play the recorded audio, with a TTS fallback.
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/mohammed-amin20/Dictionary/master/search%20Loadding.jpg" width="200"/>
-      <br/>
-      <b>Loading State</b>
-      <br/>
-      An animated shimmer skeleton is shown while the definition is being fetched.
-    </td>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/mohammed-amin20/Dictionary/master/no%20internet2.jpg" width="200"/>
-      <br/>
-      <b>No Internet</b>
-      <br/>
-      A friendly, themed screen notifies the user when there is no connection.
-    </td>
-  </tr>
-</table>
+The app ships with full light and dark themes.
+
+| Screen | Light | Dark |
+| --- | --- | --- |
+| **Home & Search** | <img src="docs/screenshots/home-light.jpeg" width="220"/> | <img src="docs/screenshots/home-dark.jpeg" width="220"/> |
+| **Word Detail** | <img src="docs/screenshots/output-light.jpeg" width="220"/> | <img src="docs/screenshots/output-dark.jpeg" width="220"/> |
+| **Loading** | <img src="docs/screenshots/search-loading-light.jpeg" width="220"/> | <img src="docs/screenshots/search-loading-dark.jpeg" width="220"/> |
+| **No Internet** | <img src="docs/screenshots/no-internet-light.jpeg" width="220"/> | <img src="docs/screenshots/no-internet-dark.jpeg" width="220"/> |
+
+<p align="center">
+  <img src="docs/screenshots/splash.jpeg" width="220"/>
+  <br/>
+  <b>Splash</b>
+</p>
 
 ## 🛠 Tech Stack
 
