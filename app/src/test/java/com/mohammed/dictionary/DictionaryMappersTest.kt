@@ -27,6 +27,22 @@ class DictionaryMappersTest {
     }
 
     @Test
+    fun protocolRelativeAudioIsNormalizedToHttps() {
+        val word = words(
+            """[{"word":"hello","meanings":[],"phonetics":[{"audio":"//ssl.gstatic.com/hello.mp3"}]}]"""
+        ).first().toDomain()
+        assertEquals("https://ssl.gstatic.com/hello.mp3", word.audio)
+    }
+
+    @Test
+    fun httpAudioIsUpgradedToHttps() {
+        val word = words(
+            """[{"word":"hello","meanings":[],"phonetics":[{"audio":"http://example.com/hello.mp3"}]}]"""
+        ).first().toDomain()
+        assertEquals("https://example.com/hello.mp3", word.audio)
+    }
+
+    @Test
     fun missingWordAndMeaningsAreSafe() {
         val word = words("""[{}]""").first().toDomain()
         assertEquals("", word.word)

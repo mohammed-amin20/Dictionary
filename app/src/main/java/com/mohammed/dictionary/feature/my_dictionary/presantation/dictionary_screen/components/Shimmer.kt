@@ -27,8 +27,8 @@ fun Modifier.shimmer(shape: Shape): Modifier = composed {
         ),
         label = "shimmerProgress"
     )
-    val base = MaterialTheme.colorScheme.surfaceVariant
-    val highlight = base.copy(alpha = 0.45f)
+    val base = MaterialTheme.colorScheme.surfaceContainerHigh
+    val highlight = MaterialTheme.colorScheme.surfaceContainerHighest
     val brush = Brush.linearGradient(
         colors = listOf(base, highlight, base),
         start = Offset(x = progress * 900f - 450f, y = 0f),

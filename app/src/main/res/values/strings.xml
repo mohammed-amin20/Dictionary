@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Dictionary</string>
     <string name="brand_title">Dictionary</string>
+    <string name="brand_tagline">Look up · Learn · Translate</string>
     <string name="english_label">English</string>
     <string name="search_hint">Search a word</string>
     <string name="search_action">Search</string>
@@ -30,6 +31,7 @@
     <string name="no_audio">No pronunciation available</string>
     <string name="definitions_count">%1$d definitions</string>
     <string name="example_label">Example</string>
+    <string name="phonetic_label">Phonetic</string>
     <string name="splash_logo_content_description">Dictionary logo</string>
     <string-array name="suggested_words">
         <item>serendipity</item>

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">قاموس</string>
     <string name="brand_title">قاموس</string>
+    <string name="brand_tagline">ابحث · تعلّم · ترجم</string>
     <string name="english_label">الإنجليزية</string>
     <string name="search_hint">ابحث عن كلمة</string>
     <string name="search_action">بحث</string>
@@ -31,6 +32,7 @@
     <string name="no_audio">لا يتوفر نطق صوتي</string>
     <string name="definitions_count">%1$d تعريفات</string>
     <string name="example_label">مثال</string>
+    <string name="phonetic_label">النطق</string>
     <string name="splash_logo_content_description">شعار قاموس</string>
     <string-array name="suggested_words">
         <item>serendipity</item>

@@ -5,5 +5,5 @@ sealed interface DictionaryScreenAction {
     data object OnImeSearch : DictionaryScreenAction
     data object OnTranslate : DictionaryScreenAction
     data class OnSearchChanged(val search: String) : DictionaryScreenAction
-    data class OnPlayAudioClicked(val audio: String) : DictionaryScreenAction
+    data class OnPlayAudioClicked(val text: String, val audioUrl: String?) : DictionaryScreenAction
 }

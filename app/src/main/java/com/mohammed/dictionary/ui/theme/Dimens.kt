@@ -25,4 +25,15 @@ object Sizes {
     val touchTarget = 48.dp
     val illustration = 220.dp
     val illustrationLarge = 320.dp
+    val logoBadge = 40.dp
+    val heroWordMax = 460.dp
+}
+
+/** Elevation tokens kept low and consistent for a soft, premium feel. */
+object Elevation {
+    val none = 0.dp
+    val low = 1.dp
+    val medium = 3.dp
+    val high = 6.dp
+    val hero = 10.dp
 }

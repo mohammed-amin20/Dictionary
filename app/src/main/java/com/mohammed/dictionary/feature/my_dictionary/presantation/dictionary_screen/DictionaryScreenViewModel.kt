@@ -1,13 +1,12 @@
 package com.mohammed.dictionary.feature.my_dictionary.presantation.dictionary_screen
 
-import android.media.AudioAttributes
-import android.media.MediaPlayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mohammed.dictionary.feature.my_dictionary.data.repository.DictionaryRepository
 import com.mohammed.dictionary.feature.my_dictionary.data.repository.TranslationRepository
 import com.mohammed.dictionary.feature.my_dictionary.data.util.Error
 import com.mohammed.dictionary.feature.my_dictionary.data.util.Result
+import com.mohammed.dictionary.feature.my_dictionary.domain.player.PronunciationPlayer
 import com.mohammed.dictionary.feature.my_dictionary.presantation.dictionary_screen.UiAction.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -23,6 +22,7 @@ import javax.inject.Inject
 class DictionaryScreenViewModel @Inject constructor(
     private val repository: DictionaryRepository,
     private val translationRepository: TranslationRepository,
+    private val player: PronunciationPlayer,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(DictionaryScreenState())
@@ -30,8 +30,6 @@ class DictionaryScreenViewModel @Inject constructor(
 
     private val _uiAction = MutableSharedFlow<UiAction>()
     val uiAction = _uiAction.asSharedFlow()
-
-    private var mediaPlayer: MediaPlayer? = null
 
     fun onAction(action: DictionaryScreenAction) {
         when (action) {
@@ -45,11 +43,11 @@ class DictionaryScreenViewModel @Inject constructor(
 
             is DictionaryScreenAction.OnPlayAudioClicked -> {
                 when {
-                    action.audio.isBlank() -> emit(UiAction.NoAudio)
+                    action.text.isBlank() && action.audioUrl.isNullOrBlank() -> emit(UiAction.NoAudio)
 
                     _state.value.playing -> stopAudio()
 
-                    else -> playAudio(action.audio)
+                    else -> playAudio(action.text, action.audioUrl)
                 }
             }
         }
@@ -61,6 +59,7 @@ class DictionaryScreenViewModel @Inject constructor(
             emit(UiAction.EmptyQuery)
             return
         }
+        stopAudio()
         viewModelScope.launch {
             _state.update {
                 it.copy(
@@ -144,51 +143,27 @@ class DictionaryScreenViewModel @Inject constructor(
         viewModelScope.launch { _uiAction.emit(action) }
     }
 
-    private fun playAudio(url: String) {
-        stopAudio()
-        try {
-            mediaPlayer = MediaPlayer().apply {
-                setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .build()
-                )
-                setDataSource(url)
-                setOnPreparedListener {
-                    it.start()
-                    _state.update { state -> state.copy(playing = true) }
-                }
-                setOnCompletionListener { stopAudio() }
-                setOnErrorListener { _, _, _ ->
-                    stopAudio()
-                    emit(UiAction.SoundError)
-                    true
-                }
-                prepareAsync()
+    private fun playAudio(text: String, audioUrl: String?) {
+        player.play(
+            text = text,
+            audioUrl = audioUrl,
+            onStart = { _state.update { state -> state.copy(playing = true) } },
+            onComplete = { _state.update { state -> state.copy(playing = false) } },
+            onError = {
+                _state.update { state -> state.copy(playing = false) }
+                emit(UiAction.SoundError)
             }
-        } catch (_: Exception) {
-            stopAudio()
-            emit(UiAction.SoundError)
-        }
+        )
     }
 
     private fun stopAudio() {
-        mediaPlayer?.run {
-            try {
-                if (isPlaying) pause()
-            } catch (_: IllegalStateException) {
-            }
-            release()
-        }
-        mediaPlayer = null
+        player.stop()
         _state.update { state -> state.copy(playing = false) }
     }
 
     override fun onCleared() {
         super.onCleared()
-        mediaPlayer?.release()
-        mediaPlayer = null
+        player.release()
     }
 }
 

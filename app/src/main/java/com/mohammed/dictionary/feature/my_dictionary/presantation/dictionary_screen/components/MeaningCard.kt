@@ -24,25 +24,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import com.mohammed.dictionary.R
 import com.mohammed.dictionary.feature.my_dictionary.domain.model.Definition
 import com.mohammed.dictionary.feature.my_dictionary.domain.model.Meaning
+import com.mohammed.dictionary.ui.theme.Elevation
 import com.mohammed.dictionary.ui.theme.Sizes
 import com.mohammed.dictionary.ui.theme.Spacing
+import com.mohammed.dictionary.ui.theme.dictionaryColors
 
 @Composable
 fun MeaningCard(
     meaning: Meaning,
     modifier: Modifier = Modifier
 ) {
+    val extras = MaterialTheme.dictionaryColors
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+        border = BorderStroke(1.dp, extras.cardStroke),
+        shadowElevation = Elevation.medium
     ) {
         Column(modifier = Modifier.padding(Spacing.lg)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -57,6 +62,14 @@ fun MeaningCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
+            Spacer(Modifier.height(Spacing.md))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(3.dp)
+                    .clip(RoundedCornerShape(percent = 50))
+                    .background(Brush.linearGradient(extras.heroGradient))
+            )
             Spacer(Modifier.height(Spacing.md))
             meaning.definitions.forEachIndexed { index, definition ->
                 DefinitionRow(number = index + 1, definition = definition)
@@ -93,18 +106,19 @@ private fun DefinitionRow(
     number: Int,
     definition: Definition
 ) {
+    val extras = MaterialTheme.dictionaryColors
     Row {
         Box(
             modifier = Modifier
                 .size(Sizes.iconMd)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primaryContainer),
+                .background(Brush.linearGradient(extras.heroGradient)),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = number.toString(),
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = extras.onGradient
             )
         }
         Spacer(Modifier.width(Spacing.md))
@@ -124,6 +138,7 @@ private fun DefinitionRow(
 
 @Composable
 private fun ExampleQuote(example: String) {
+    val extras = MaterialTheme.dictionaryColors
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -135,7 +150,7 @@ private fun ExampleQuote(example: String) {
                 .width(3.dp)
                 .fillMaxHeight()
                 .clip(RoundedCornerShape(percent = 50))
-                .background(MaterialTheme.colorScheme.tertiary)
+                .background(Brush.linearGradient(extras.goldGradient))
         )
         Text(
             text = stringResource(R.string.example_label) + ": \u201C" + example.trim() + "\u201D",

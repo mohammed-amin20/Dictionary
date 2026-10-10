@@ -16,8 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
@@ -42,8 +43,10 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.mohammed.dictionary.R
 import com.mohammed.dictionary.feature.my_dictionary.domain.model.Translation
+import com.mohammed.dictionary.ui.theme.Elevation
 import com.mohammed.dictionary.ui.theme.Sizes
 import com.mohammed.dictionary.ui.theme.Spacing
+import com.mohammed.dictionary.ui.theme.dictionaryColors
 import kotlinx.coroutines.delay
 
 @Composable
@@ -54,11 +57,13 @@ fun TranslationCard(
     onRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val extras = MaterialTheme.dictionaryColors
     Surface(
         modifier = modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.large,
         color = MaterialTheme.colorScheme.tertiaryContainer,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary.copy(alpha = 0.45f))
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary.copy(alpha = 0.45f)),
+        shadowElevation = Elevation.low
     ) {
         Column(modifier = Modifier.padding(Spacing.lg)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -72,13 +77,21 @@ fun TranslationCard(
                 Spacer(Modifier.weight(1f))
                 IconButton(onClick = onRetry, enabled = !translating) {
                     Icon(
-                        imageVector = Icons.Default.Refresh,
+                        imageVector = Icons.Rounded.Refresh,
                         contentDescription = stringResource(R.string.refresh_translation),
                         tint = MaterialTheme.colorScheme.onTertiaryContainer,
                         modifier = Modifier.size(Sizes.iconSm)
                     )
                 }
             }
+            Spacer(Modifier.height(Spacing.md))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(3.dp)
+                    .clip(RoundedCornerShape(percent = 50))
+                    .background(Brush.linearGradient(extras.goldGradient))
+            )
             Spacer(Modifier.height(Spacing.md))
             when {
                 translating -> TranslationSkeleton()
@@ -91,16 +104,17 @@ fun TranslationCard(
 
 @Composable
 private fun LanguageTag() {
+    val extras = MaterialTheme.dictionaryColors
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(percent = 50))
-            .background(MaterialTheme.colorScheme.tertiary)
+            .background(Brush.linearGradient(extras.goldGradient))
             .padding(horizontal = Spacing.md, vertical = Spacing.xs)
     ) {
         Text(
             text = stringResource(R.string.translation_language_tag),
             style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onTertiary
+            color = extras.onGradient
         )
     }
 }
@@ -151,7 +165,7 @@ private fun CopyButton(text: String) {
     ) {
         if (copied) {
             Icon(
-                imageVector = Icons.Default.Check,
+                imageVector = Icons.Rounded.Check,
                 contentDescription = null,
                 tint = contentColor,
                 modifier = Modifier.size(Sizes.iconSm)

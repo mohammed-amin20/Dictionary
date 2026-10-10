@@ -1,39 +1,47 @@
 package com.mohammed.dictionary.feature.my_dictionary.presantation.dictionary_screen
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.scaleIn
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -52,7 +60,9 @@ import com.mohammed.dictionary.feature.my_dictionary.presantation.dictionary_scr
 import com.mohammed.dictionary.feature.my_dictionary.presantation.dictionary_screen.components.ServerErrorState
 import com.mohammed.dictionary.feature.my_dictionary.presantation.dictionary_screen.components.TranslationCard
 import com.mohammed.dictionary.feature.my_dictionary.presantation.dictionary_screen.components.WordHeader
+import com.mohammed.dictionary.ui.theme.Sizes
 import com.mohammed.dictionary.ui.theme.Spacing
+import com.mohammed.dictionary.ui.theme.dictionaryColors
 
 private enum class ContentState { Idle, Loading, NoInternet, Server, NotFound, Content }
 
@@ -85,68 +95,79 @@ fun DictionaryScreen(
         }
     }
 
-    Scaffold(
-        contentWindowInsets = WindowInsets.safeDrawing,
-        containerColor = MaterialTheme.colorScheme.background,
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = { DictionaryTopBar() }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            DictionarySearchBar(
-                value = state.search,
-                loading = state.loading,
-                onValueChange = { viewModel.onAction(DictionaryScreenAction.OnSearchChanged(it)) },
-                onSearch = { viewModel.onAction(DictionaryScreenAction.OnImeSearch) },
-                modifier = Modifier.padding(
-                    start = Spacing.lg,
-                    end = Spacing.lg,
-                    top = Spacing.md,
-                    bottom = Spacing.sm
+    Box(modifier = Modifier.fillMaxSize()) {
+        AmbientBackground()
+        Scaffold(
+            containerColor = Color.Transparent,
+            contentWindowInsets = WindowInsets.safeDrawing,
+            snackbarHost = { SnackbarHost(snackbarHostState) },
+            topBar = { DictionaryHeader() }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+                DictionarySearchBar(
+                    value = state.search,
+                    loading = state.loading,
+                    onValueChange = { viewModel.onAction(DictionaryScreenAction.OnSearchChanged(it)) },
+                    onSearch = { viewModel.onAction(DictionaryScreenAction.OnImeSearch) },
+                    modifier = Modifier.padding(
+                        start = Spacing.lg,
+                        end = Spacing.lg,
+                        top = Spacing.md,
+                        bottom = Spacing.sm
+                    )
                 )
-            )
 
-            AnimatedContent(
-                targetState = state.toContentState(),
-                transitionSpec = {
-                    (
-                        fadeIn(animationSpec = tween(durationMillis = 280)) +
-                            slideInVertically(animationSpec = tween(durationMillis = 280)) { it / 14 }
-                        ) togetherWith fadeOut(animationSpec = tween(durationMillis = 160))
-                },
-                label = "dictionaryContent",
-                modifier = Modifier.fillMaxSize()
-            ) { contentState ->
-                when (contentState) {
-                    ContentState.Loading -> LoadingSkeleton()
+                AnimatedContent(
+                    targetState = state.toContentState(),
+                    transitionSpec = {
+                        (
+                            fadeIn(animationSpec = tween(durationMillis = 300)) +
+                                scaleIn(
+                                    initialScale = 0.97f,
+                                    animationSpec = tween(
+                                        durationMillis = 300,
+                                        easing = FastOutSlowInEasing
+                                    )
+                                )
+                            ) togetherWith fadeOut(animationSpec = tween(durationMillis = 160))
+                    },
+                    label = "dictionaryContent",
+                    modifier = Modifier.fillMaxSize()
+                ) { contentState ->
+                    when (contentState) {
+                        ContentState.Loading -> LoadingSkeleton()
 
-                    ContentState.NoInternet -> NoInternetState(
-                        onRetry = { viewModel.onAction(DictionaryScreenAction.OnImeSearch) }
-                    )
+                        ContentState.NoInternet -> NoInternetState(
+                            onRetry = { viewModel.onAction(DictionaryScreenAction.OnImeSearch) }
+                        )
 
-                    ContentState.Server -> ServerErrorState(
-                        onRetry = { viewModel.onAction(DictionaryScreenAction.OnImeSearch) }
-                    )
+                        ContentState.Server -> ServerErrorState(
+                            onRetry = { viewModel.onAction(DictionaryScreenAction.OnImeSearch) }
+                        )
 
-                    ContentState.NotFound -> NotFoundState()
+                        ContentState.NotFound -> NotFoundState()
 
-                    ContentState.Idle -> IdleState(
-                        onSuggestionClick = { word ->
-                            viewModel.onAction(DictionaryScreenAction.OnSearchChanged(word))
-                            viewModel.onAction(DictionaryScreenAction.OnImeSearch)
-                        }
-                    )
+                        ContentState.Idle -> IdleState(
+                            onSuggestionClick = { word ->
+                                viewModel.onAction(DictionaryScreenAction.OnSearchChanged(word))
+                                viewModel.onAction(DictionaryScreenAction.OnImeSearch)
+                            }
+                        )
 
-                    ContentState.Content -> WordContent(
-                        state = state,
-                        onPlayAudio = { audio ->
-                            viewModel.onAction(DictionaryScreenAction.OnPlayAudioClicked(audio))
-                        },
-                        onTranslate = { viewModel.onAction(DictionaryScreenAction.OnTranslate) }
-                    )
+                        ContentState.Content -> WordContent(
+                            state = state,
+                            onPlayAudio = { text, audioUrl ->
+                                viewModel.onAction(
+                                    DictionaryScreenAction.OnPlayAudioClicked(text, audioUrl)
+                                )
+                            },
+                            onTranslate = { viewModel.onAction(DictionaryScreenAction.OnTranslate) }
+                        )
+                    }
                 }
             }
         }
@@ -154,9 +175,44 @@ fun DictionaryScreen(
 }
 
 @Composable
+private fun AmbientBackground() {
+    val extras = MaterialTheme.dictionaryColors
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .drawBehind {
+                drawRect(brush = Brush.verticalGradient(extras.backgroundGradient))
+
+                val glow = extras.accentGlow
+                val topCenter = Offset(size.width * 0.85f, -size.height * 0.05f)
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        colors = listOf(glow, Color.Transparent),
+                        center = topCenter,
+                        radius = size.minDimension * 0.9f
+                    ),
+                    radius = size.minDimension * 0.9f,
+                    center = topCenter
+                )
+
+                val bottomCenter = Offset(size.width * 0.1f, size.height * 1.02f)
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        colors = listOf(glow, Color.Transparent),
+                        center = bottomCenter,
+                        radius = size.minDimension * 0.85f
+                    ),
+                    radius = size.minDimension * 0.85f,
+                    center = bottomCenter
+                )
+            }
+    )
+}
+
+@Composable
 private fun WordContent(
     state: DictionaryScreenState,
-    onPlayAudio: (String) -> Unit,
+    onPlayAudio: (String, String?) -> Unit,
     onTranslate: () -> Unit
 ) {
     val word: Word = state.word ?: return
@@ -175,8 +231,8 @@ private fun WordContent(
             PronunciationButton(
                 phonetic = word.phonetic,
                 playing = state.playing,
-                enabled = !word.audio.isNullOrBlank(),
-                onClick = { onPlayAudio(word.audio.orEmpty()) }
+                enabled = word.word.isNotBlank(),
+                onClick = { onPlayAudio(word.word, word.audio) }
             )
         }
         item {
@@ -193,27 +249,42 @@ private fun WordContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DictionaryTopBar() {
-    TopAppBar(
-        title = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painterResource(R.drawable.logo),
-                    contentDescription = stringResource(R.string.logo_content_description),
-                    modifier = Modifier.size(36.dp)
-                )
-                Spacer(Modifier.width(Spacing.md))
-                Text(
-                    text = stringResource(R.string.brand_title),
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary
-        )
-    )
+private fun DictionaryHeader() {
+    val extras = MaterialTheme.dictionaryColors
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .padding(horizontal = Spacing.lg, vertical = Spacing.md),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(Sizes.logoBadge)
+                .clip(MaterialTheme.shapes.small)
+                .background(extras.glassSurface)
+                .border(1.dp, extras.cardStroke, MaterialTheme.shapes.small),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(R.drawable.logo),
+                contentDescription = stringResource(R.string.logo_content_description),
+                modifier = Modifier.size(28.dp)
+            )
+        }
+        Spacer(Modifier.width(Spacing.md))
+        Column {
+            Text(
+                text = stringResource(R.string.brand_title),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                text = stringResource(R.string.brand_tagline),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
 }

@@ -12,9 +12,9 @@ fun WordsDtoItem.toDomain(): Word {
             ?: this.phonetics.orEmpty().firstNotNullOfOrNull {
                 it.text?.takeIf { text -> text.isNotBlank() }
             }.orEmpty(),
-        audio = this.phonetics.orEmpty().firstNotNullOfOrNull {
-            it.audio?.takeIf { audio -> audio.isNotBlank() }
-        }.orEmpty(),
+        audio = this.phonetics.orEmpty()
+            .firstNotNullOfOrNull { it.audio?.takeIf { audio -> audio.isNotBlank() } }
+            .normalizeAudioUrl(),
         word = this.word.orEmpty()
     )
 }
@@ -31,4 +31,14 @@ fun Definition.toDomain(): com.mohammed.dictionary.feature.my_dictionary.domain.
         definition = this.definition.orEmpty(),
         example = this.example.orEmpty()
     )
+}
+
+private fun String?.normalizeAudioUrl(): String {
+    val value = this?.trim().orEmpty()
+    return when {
+        value.isBlank() -> ""
+        value.startsWith("//") -> "https:$value"
+        value.startsWith("http://") -> "https://" + value.removePrefix("http://")
+        else -> value
+    }
 }
