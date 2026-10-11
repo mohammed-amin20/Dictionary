@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="app/src/main/ic_launcher-playstore.png" width="96" alt="Dictionary app icon"/>
+  <img src="docs/logo.png" width="96" alt="Dictionary logo"/>
 </p>
 
 <h1 align="center">Dictionary</h1>
